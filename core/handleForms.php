@@ -39,4 +39,45 @@ if(isset($_POST['loginButton'])) {
         header('Location: ../login.php');
     }
 }
+
+if(isset($_POST['addJobPostButton'])) {
+    $job_title = $_POST['job_title'];
+    $job_desc = $_POST['job_desc'];
+
+    $function = addJobPost($pdo, $job_title, $job_desc);
+    if($function['statusCode'] == "200"){
+        $_SESSION['message'] = $function['message'];
+        header("Location: ../index.php");
+    } elseif($function['statusCode'] == "400") {
+        $_SESSION['message'] = "Error " . $function['statusCode'] . ": " . $function['message'];
+        header('Location: ../addJobPost.php');
+    }
+}
+
+if(isset($_POST['sendApplicationButton'])) {
+    $cover_letter = $_POST['cover_letter'];
+    $attachment = $_FILES['attachment'];
+    $post_id = $_POST['post_id'];
+    $target_directory = "../resumes/job_post_" . $post_id;
+    $target_file = $target_directory . "/" . $attachment['name'];
+
+    $function = addApplication($pdo, $post_id, $cover_letter, $attachment);
+    if($function['statusCode'] == "200"){
+        $_SESSION['message'] = $function['message'];
+        header("Location: ../index.php");
+    } elseif($function['statusCode'] == "400") {
+        $_SESSION['message'] = "Error " . $function['statusCode'] . ": " . $function['message'];
+        header('Location: ../sendApplication.php?post_id=' . $post_id);
+    }
+
+    if(!is_dir($target_directory)) {
+        mkdir($target_directory, 0777, true);
+    }
+
+    if(move_uploaded_file($attachment['tmp_name'], $target_file)) {
+        header("Location: ../viewJobPost.php?post_id=" . $post_id);
+    } else {
+        $_SESSION['message'] = "FILE UPLOAD FAILED";
+    }
+}
 ?>

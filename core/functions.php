@@ -10,7 +10,6 @@ function sanitizeInput($input) {
 }
 
 function addUser($pdo, $username, $password, $confirm_passwrd, $hashed_password, $first_name, $last_name, $age, $birthdate, $email_address, $phone_number, $home_address) {
-    $response = array();
     if(checkUsernameExistence($pdo, $username)) {
         $response = array(
             "statusCode" => "400",
@@ -56,7 +55,6 @@ function addUser($pdo, $username, $password, $confirm_passwrd, $hashed_password,
 }
 
 function loginUser($pdo, $username, $password) {
-    $response = array();
     if(!checkUsernameExistence($pdo, $username)) {
 		$response = array(
             "statusCode" => "400",
@@ -65,13 +63,20 @@ function loginUser($pdo, $username, $password) {
         return $response;
 	}
 
-	$query = "SELECT * FROM user_accounts WHERE username = ?";
-	$statement = $pdo -> prepare($query);
-	$statement -> execute([$username]);
-	$applicantAccountData = $statement -> fetch();
+	$applicantAccountData = getUserByUsername($pdo, $username);
+    if($applicantAccountData['statusCode'] == "400") {
+        $response = array(
+            "statusCode" => "400",
+            "message" => "Failed to get user " . $username . "!"
+        );
+        return $response;
+    } else {
+        $applicantAccountData = $applicantAccountData['querySet'];
+    }
 
 	if(password_verify($password, $applicantAccountData['user_password'])) {
 		$_SESSION['user_id'] = $applicantAccountData['user_id'];
+        $_SESSION['user_role'] = getUserByID($pdo, $applicantAccountData['user_id'])['querySet']['user_role'];
 		$response = array(
             "statusCode" => "200",
             "message" => "Successfully logged in!"
@@ -100,10 +105,127 @@ function getUserByID($pdo, $user_id) {
     } else {
         $response = array(
             "statusCode" => "400",
-            "message" => "Failed to get user# " . $user_id . "!"
+            "message" => "Failed to get user #" . $user_id . "!"
         );
     }
     return $response;
 }
 
+function getUserByUsername($pdo, $username) {
+    $query = "SELECT * FROM user_accounts WHERE username = ?";
+
+	$statement = $pdo -> prepare($query);
+	$executeQuery = $statement -> execute([$username]);
+	
+    if($executeQuery) {
+        $response = array(
+            "statusCode" => "200",
+            "querySet" => $statement -> fetch()
+        );
+    } else {
+        $response = array(
+            "statusCode" => "400",
+            "message" => "Failed to get user " . $username . "!"
+        );
+    }
+    return $response;
+}
+
+function addJobPost($pdo, $job_title, $job_desc) {
+    $query = "INSERT INTO job_posts (poster_id, job_title, job_desc) VALUES (?, ?, ?)";
+    $statement = $pdo -> prepare($query);
+	$executeQuery = $statement -> execute([$_SESSION['user_id'], $job_title, $job_desc]);
+    
+    if ($executeQuery) {
+		$response = array(
+            "statusCode" => "200",
+            "message" => "Successfully posted job!"
+        );
+	} else {
+        $response = array(
+            "statusCode" => "400",
+            "message" => "Failed to post job!"
+        );
+    }
+    return $response;
+}
+
+function getAllJobPosts($pdo) {
+    $query = "SELECT * FROM job_posts";
+
+    $statement = $pdo -> prepare($query);
+    $executeQuery = $statement -> execute();
+
+    if($executeQuery) {
+        $response = array(
+            "statusCode" => "200",
+            "querySet" => $statement -> fetchAll()
+        );
+    } else {
+        $response = array(
+            "statusCode" => "400",
+            "message" => "Failed to get all job posts!"
+        );
+    }
+    return $response;
+}
+
+function getJobPostByID($pdo, $post_id) {
+    $query = "SELECT * FROM job_posts WHERE post_id = ?";
+
+    $statement = $pdo -> prepare($query);
+    $executeQuery = $statement -> execute([$post_id]);
+
+    if($executeQuery) {
+        $response = array(
+            "statusCode" => "200",
+            "querySet" => $statement -> fetch()
+        );
+    } else {
+        $response = array(
+            "statusCode" => "400",
+            "message" => "Failed to get job post #" . $post_id . "!"
+        );
+    }
+    return $response;
+}
+
+function addApplication($pdo, $post_id, $cover_letter, $attachment) {
+    $query = "INSERT INTO applications (applicant_id, post_id, cover_letter, attachment, application_status) VALUES (?, ?, ?, ?, ?)";
+    $statement = $pdo -> prepare($query);
+	$executeQuery = $statement -> execute([$_SESSION['user_id'], $post_id, $cover_letter, $attachment, "Pending"]);
+    
+    if ($executeQuery) {
+		$response = array(
+            "statusCode" => "200",
+            "message" => "Successfully sent application!"
+        );
+	} else {
+        $response = array(
+            "statusCode" => "400",
+            "message" => "Failed to send application!"
+        );
+    }
+    return $response;
+}
+
+function getApplicationsByPostID($pdo, $post_id) {
+    $query = "SELECT * FROM applications WHERE post_id = ?";
+
+    $statement = $pdo -> prepare($query);
+    $executeQuery = $statement -> execute([$post_id]);
+
+    if($executeQuery) {
+        $response = array(
+            "statusCode" => "200",
+            "querySet" => $statement -> fetchAll()
+        );
+    } else {
+        $response = array(
+            "statusCode" => "400",
+            "message" => "Failed to get all applications from job post #" . $post_id . "!"
+        );
+    }
+    return $response;
+}
 ?>

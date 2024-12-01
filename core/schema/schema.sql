@@ -13,26 +13,29 @@ CREATE TABLE users (
 
 CREATE TABLE user_accounts (
   user_id INT AUTO_INCREMENT PRIMARY KEY,
-  username VARCHAR(64),
-  user_password varchar(128)
+  username VARCHAR(64) NOT NULL,
+  user_password varchar(128) NOT NULL
 );
 
 CREATE TABLE job_posts (
   post_id INT AUTO_INCREMENT PRIMARY KEY,
-  poster_id INT,
+  poster_id INT NOT NULL,
+  job_title VARCHAR(256) NOT NULL,
   job_desc VARCHAR(4096)
 );
 
 CREATE TABLE applications (
   application_id INT AUTO_INCREMENT PRIMARY KEY,
-  post_id INT,
-  cover_letter VARCHAR(2048),
-  attachment VARCHAR(512)
+  applicant_id INT NOT NULL,
+  post_id INT NOT NULL,
+  cover_letter VARCHAR(2048) NOT NULL,
+  attachment VARCHAR(512) NOT NULL,
+  application_status ENUM('Pending', 'Accepted', 'Rejected') NOT NULL
 );
 
 CREATE TABLE messages (
   message_id INT AUTO_INCREMENT PRIMARY KEY,
-  application_id INT,
-  sender_id INT,
-  message_content VARCHAR(2048)
+  application_id INT NOT NULL,
+  sender_id INT NOT NULL,
+  message_content VARCHAR(2048) NOT NULL
 );
