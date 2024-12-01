@@ -12,7 +12,7 @@ th, td {
 }
 
 
-input {
+input, button {
     padding: 6px 8px;
     margin: 8px 2px;
     box-sizing: border-box;

@@ -54,6 +54,33 @@ function addUser($pdo, $username, $password, $confirm_passwrd, $hashed_password,
     return $response;
 }
 
+function editProfile($pdo, $first_name, $last_name, $age, $birthdate, $email_address, $phone_number, $home_address, $user_id) {
+	$query = "UPDATE users
+            SET first_name = ?,
+                last_name = ?,
+                age = ?,
+                birthdate = ?,
+                email_address = ?,
+                phone_number = ?,
+                home_address = ?
+            WHERE user_id = ?";
+	$statement = $pdo -> prepare($query);
+	$executeQuery = $statement -> execute([$first_name, $last_name, $age, $birthdate, $email_address, $phone_number, $home_address, $user_id]);
+
+    if ($executeQuery) {
+		$response = array(
+            "statusCode" => "200",
+            "message" => "Successfully edited profile!"
+        );
+	} else {
+        $response = array(
+            "statusCode" => "400",
+            "message" => "Something went wrong in editing the profile!"
+        );
+    }
+    return $response;
+}
+
 function loginUser($pdo, $username, $password) {
     if(!checkUsernameExistence($pdo, $username)) {
 		$response = array(

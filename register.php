@@ -55,7 +55,7 @@ if(isset($_SESSION['user_id'])) {
         <div style="display: flex; align-items: center;">
             <input type="submit" name="registerButton" value="Register account">
         </form>
-            <input type="submit" name="returnButton" value="Return to login" onclick="window.location.href='login.php'">
+            <button type="button" onclick="window.location.href='login.php'">Return to login</button>
         </div>
     </body>
 </html>
