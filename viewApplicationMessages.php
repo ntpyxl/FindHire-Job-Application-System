@@ -24,23 +24,21 @@ if(!isset($_SESSION['user_id'])) {
 	    <?php } unset($_SESSION['message']); ?>
 
         <br>
-        <?php $messageCount = getMessagesCountByApplicationID($pdo, $_GET['application_id'])['querySet']?>
-        <input type="submit" value="Message HR (<?php echo $messageCount['messageCount']?> Messages)" onclick="window.location.href='viewApplicationMessages.php?post_id=<?php echo $_GET['post_id']?>&application_id=<?php echo $_GET['application_id']?>';">
-        <input type="submit" value="Return home" onclick="window.location.href='index.php';">
+        <input type="submit" value="Return" onclick="window.location.href='viewApplication.php?post_id=<?php echo $_GET['post_id']?>&application_id=<?php echo $_GET['application_id']; ?>';">
 
         <hr style="width: 99%; height: 2px; color: black; background-color: black; text-align: center;">
 
         <?php $jobPostData = getJobPostByID($pdo, $_GET['post_id'])['querySet']?>
         <h2>Job Title: <?php echo $jobPostData['job_title']?></h2>
-        <p><b>Job Description:</b> <br><?php echo $jobPostData['job_desc']?></p>
 
         <hr style="width: 99%; height: 2px; color: black; background-color: black; text-align: center;">
 
-        <h3>Your Application</h3>
-
-        <?php $applicationData = getApplicationByID($pdo, $_GET['application_id'])['querySet']?>
-        <p><b>Attachment:</b> <br><?php echo $applicationData['attachment']?></p>
-        <p><b>Cover Letter:</b> <br><?php echo $applicationData['cover_letter']?></p>
-
+        <h2>Messages</h2>
+        
+        
+        <form action="core/handleForms.php" method="POST">
+            <textarea name="message" rows="4" cols="50" required></textarea> <br>
+            <input type="submit" name="sendMessageButton" value="Send Message">
+        </form>
     </body>
 </html>

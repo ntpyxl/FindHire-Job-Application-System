@@ -18,6 +18,10 @@ input, button {
     box-sizing: border-box;
 }
 
+textarea {
+    resize: none;
+}
+
 form {
     margin: 0px;
 }

@@ -21,7 +21,8 @@ CREATE TABLE job_posts (
   post_id INT AUTO_INCREMENT PRIMARY KEY,
   poster_id INT NOT NULL,
   job_title VARCHAR(256) NOT NULL,
-  job_desc VARCHAR(4096)
+  job_desc VARCHAR(4096),
+  date_posted TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL
 );
 
 CREATE TABLE applications (
@@ -30,12 +31,14 @@ CREATE TABLE applications (
   post_id INT NOT NULL,
   cover_letter VARCHAR(2048) NOT NULL,
   attachment VARCHAR(512) NOT NULL,
-  application_status ENUM('Pending', 'Accepted', 'Rejected') NOT NULL
+  application_status ENUM('Pending', 'Accepted', 'Rejected') NOT NULL,
+  date_sent TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL
 );
 
 CREATE TABLE messages (
   message_id INT AUTO_INCREMENT PRIMARY KEY,
   application_id INT NOT NULL,
   sender_id INT NOT NULL,
-  message_content VARCHAR(2048) NOT NULL
+  message_content VARCHAR(2048) NOT NULL,
+  date_sent TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL
 );

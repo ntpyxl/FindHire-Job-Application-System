@@ -83,7 +83,7 @@ if(isset($_POST['sendApplicationButton'])) {
     $target_directory = "../resumes/job_post_" . $post_id;
     $target_file = $target_directory . "/" . $attachment['name'];
 
-    $function = addApplication($pdo, $post_id, $cover_letter, $attachment);
+    $function = addApplication($pdo, $post_id, $cover_letter, $attachment['name']);
     if($function['statusCode'] == "200"){
         $_SESSION['message'] = $function['message'];
         header("Location: ../index.php");
@@ -102,4 +102,5 @@ if(isset($_POST['sendApplicationButton'])) {
         $_SESSION['message'] = "FILE UPLOAD FAILED";
     }
 }
+
 ?>

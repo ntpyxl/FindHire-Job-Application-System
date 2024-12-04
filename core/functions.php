@@ -236,6 +236,26 @@ function addApplication($pdo, $post_id, $cover_letter, $attachment) {
     return $response;
 }
 
+function getApplicationByID($pdo, $application_id) {
+    $query = "SELECT * FROM applications WHERE application_id = ?";
+
+    $statement = $pdo -> prepare($query);
+    $executeQuery = $statement -> execute([$application_id]);
+
+    if($executeQuery) {
+        $response = array(
+            "statusCode" => "200",
+            "querySet" => $statement -> fetch()
+        );
+    } else {
+        $response = array(
+            "statusCode" => "400",
+            "message" => "Failed to get application #" . $applicant_id . "!"
+        );
+    }
+    return $response;
+}
+
 function getApplicationsByPostID($pdo, $post_id) {
     $query = "SELECT * FROM applications WHERE post_id = ?";
 
@@ -255,4 +275,65 @@ function getApplicationsByPostID($pdo, $post_id) {
     }
     return $response;
 }
+
+function getApplicationsByApplicantID($pdo, $applicant_id) {
+    $query = "SELECT * FROM applications WHERE applicant_id = ?";
+
+    $statement = $pdo -> prepare($query);
+    $executeQuery = $statement -> execute([$applicant_id]);
+
+    if($executeQuery) {
+        $response = array(
+            "statusCode" => "200",
+            "querySet" => $statement -> fetchAll()
+        );
+    } else {
+        $response = array(
+            "statusCode" => "400",
+            "message" => "Failed to get all applications from applicant #" . $applicant_id . "!"
+        );
+    }
+    return $response;
+}
+
+function getMessagesByApplicationID($pdo, $application_id) {
+    $query = "SELECT * FROM messages WHERE application_id = ?";
+
+    $statement = $pdo -> prepare($query);
+    $executeQuery = $statement -> execute([$application_id]);
+
+    if($executeQuery) {
+        $response = array(
+            "statusCode" => "200",
+            "querySet" => $statement -> fetchAll()
+        );
+    } else {
+        $response = array(
+            "statusCode" => "400",
+            "message" => "Failed to get all messages from application #" . $application_id . "!"
+        );
+    }
+    return $response;
+}
+
+function getMessagesCountByApplicationID($pdo, $application_id) {
+    $query = "SELECT COUNT(*) AS messageCount FROM messages WHERE application_id = ?";
+
+    $statement = $pdo -> prepare($query);
+    $executeQuery = $statement -> execute([$application_id]);
+
+    if($executeQuery) {
+        $response = array(
+            "statusCode" => "200",
+            "querySet" => $statement -> fetch()
+        );
+    } else {
+        $response = array(
+            "statusCode" => "400",
+            "message" => "Failed to get messages count from application #" . $application_id . "!"
+        );
+    }
+    return $response;
+}
+
 ?>

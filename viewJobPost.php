@@ -23,11 +23,11 @@ if(!isset($_SESSION['user_id'])) {
 
         <hr style="width: 99%; height: 2px; color: black; background-color: black; text-align: center;">
 
-        <input type="submit" value="Return" onclick="window.location.href='index.php';">
+        <input type="submit" value="Return home" onclick="window.location.href='index.php';">
 
         <?php $jobPostData = getJobPostByID($pdo, $_GET['post_id'])['querySet']; ?>
         <h2>Job Title: <?php echo $jobPostData['job_title']?></h2>
-        <p>Job Description: <br><?php echo $jobPostData['job_desc']?></p>
+        <p><b>Job Description:</b> <br><?php echo $jobPostData['job_desc']?></p>
 
         <hr style="width: 99%; height: 2px; color: black; background-color: black; text-align: center;">
 
