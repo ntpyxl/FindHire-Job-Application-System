@@ -57,7 +57,8 @@ if(!isset($_SESSION['user_id'])) {
                     <td><?php echo $applicantData['first_name'] . ' ' . $applicantData['last_name']?></td>
                     <td><?php echo $row['application_status']?></td>
                     <td>
-                        <input type="submit" value="View Application" onclick="window.location.href='viewApplication.php?post_id=<?php echo $_GET['post_id']?>&application_id=<?php echo $row['application_id']; ?>';">
+                        <?php $messageCount = countMessagesByApplicationID($pdo, $row['application_id'])['querySet']?>
+                        <input type="submit" value="View Application (<?php echo $messageCount['messageCount']?> Messages)" onclick="window.location.href='viewApplication.php?post_id=<?php echo $_GET['post_id']?>&application_id=<?php echo $row['application_id']; ?>';">
                     </td>
                 </tr>
             <?php 

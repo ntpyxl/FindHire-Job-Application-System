@@ -35,7 +35,7 @@ if($_SESSION['user_role'] == "Applicant") {
             <input type="text" name="job_title" required> <br>
 
             <label for="job_desc">Job description</label>
-            <textarea name="job_desc" rows="4" cols="50" required></textarea> <br>
+            <textarea name="job_desc" rows="20" cols="70" required></textarea> <br>
 
             <input type="submit" name="addJobPostButton">
         </form>

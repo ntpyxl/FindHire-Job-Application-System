@@ -30,7 +30,7 @@ if(!isset($_SESSION['user_id'])) {
 
         <table>
             <tr>
-                <th colspan="5", style="font-size: 18px;">Your Application History</th>
+                <th colspan="6", style="font-size: 18px;">Your Application History</th>
             </tr>
 
             <tr>
@@ -38,6 +38,7 @@ if(!isset($_SESSION['user_id'])) {
                 <th>Job Post</th>
                 <th>Attachment</th>
                 <th>Status</th>
+                <th>Date Sent</th>
                 <th>Actions</th>
             </tr>
 
@@ -51,6 +52,7 @@ if(!isset($_SESSION['user_id'])) {
                     <td><?php echo $jobPostData['job_title']?></td>
                     <td><?php echo $row['attachment']?></td>
                     <td><?php echo $row['application_status']?></td>
+                    <td><?php echo $row['date_sent']?></td>
                     <td>
                         <input type="submit" value="View Application" onclick="window.location.href='viewApplication.php?post_id=<?php echo $row['post_id']?>&application_id=<?php echo $row['application_id']; ?>';">
                     </td>

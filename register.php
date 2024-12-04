@@ -52,10 +52,8 @@ if(isset($_SESSION['user_id'])) {
             <label for="home_address">Home Address</label>
             <input type="text" name="home_address" id="home_address" placeholder="Block 1 Lot 10 Phase 2, Example Street, Sample Village, Ergo Town, The City" required> <br>
 
-        <div style="display: flex; align-items: center;">
             <input type="submit" name="registerButton" value="Register account">
         </form>
-            <button type="button" onclick="window.location.href='login.php'">Return to login</button>
-        </div>
+        <button type="button" onclick="window.location.href='login.php'">Return to login</button>
     </body>
 </html>

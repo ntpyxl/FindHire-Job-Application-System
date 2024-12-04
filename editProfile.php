@@ -42,10 +42,8 @@ if(!isset($_SESSION['user_id'])) {
             <label for="home_address">Home Address</label>
             <input type="text" name="home_address" id="home_address" placeholder="Block 1 Lot 10 Phase 2, Example Street, Sample Village, Ergo Town, The City" value="<?php echo $profileData['home_address']?>" required> <br>
 
-        <div style="display: flex; align-items: center;">
             <input type="submit" name="editProfileButton" value="Edit profile">
         </form>
-            <button type="button" onclick="window.location.href='viewProfile.php'">Return to profile</button>
-        </div>
+        <input type="submit" value="Return to profile" onclick="window.location.href='viewProfile.php'">
     </body>
 </html>

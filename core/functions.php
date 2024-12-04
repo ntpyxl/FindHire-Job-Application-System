@@ -177,6 +177,47 @@ function addJobPost($pdo, $job_title, $job_desc) {
     return $response;
 }
 
+function editJobPost($pdo, $job_title, $job_desc, $post_id) {
+    $query = "UPDATE job_posts
+            SET job_title = ?,
+                job_desc = ?
+            WHERE post_id = ?";
+    $statement = $pdo -> prepare($query);
+	$executeQuery = $statement -> execute([$job_title, $job_desc, $post_id]);
+    
+    if ($executeQuery) {
+		$response = array(
+            "statusCode" => "200",
+            "message" => "Successfully edited job post!"
+        );
+	} else {
+        $response = array(
+            "statusCode" => "400",
+            "message" => "Failed to edit job post!"
+        );
+    }
+    return $response;
+}
+
+function deleteJobPost($pdo, $post_id) {
+    $query = "DELETE FROM job_posts WHERE post_id = ?";
+    $statement = $pdo -> prepare($query);
+	$executeQuery = $statement -> execute([$post_id]);
+    
+    if ($executeQuery) {
+		$response = array(
+            "statusCode" => "200",
+            "message" => "Successfully deleted job post!"
+        );
+	} else {
+        $response = array(
+            "statusCode" => "400",
+            "message" => "Failed to delete job post!"
+        );
+    }
+    return $response;
+}
+
 function getAllJobPosts($pdo) {
     $query = "SELECT * FROM job_posts";
 
@@ -192,6 +233,26 @@ function getAllJobPosts($pdo) {
         $response = array(
             "statusCode" => "400",
             "message" => "Failed to get all job posts!"
+        );
+    }
+    return $response;
+}
+
+function getAllJobPostsByRecruiterID($pdo, $recruiter_id) {
+    $query = "SELECT * FROM job_posts WHERE poster_id = ?";
+
+    $statement = $pdo -> prepare($query);
+    $executeQuery = $statement -> execute([$recruiter_id]);
+
+    if($executeQuery) {
+        $response = array(
+            "statusCode" => "200",
+            "querySet" => $statement -> fetchAll()
+        );
+    } else {
+        $response = array(
+            "statusCode" => "400",
+            "message" => "Failed to get all job posts by recruiter #" . $recruiter_id . "!"
         );
     }
     return $response;
@@ -231,6 +292,27 @@ function addApplication($pdo, $post_id, $cover_letter, $attachment) {
         $response = array(
             "statusCode" => "400",
             "message" => "Failed to send application!"
+        );
+    }
+    return $response;
+}
+
+function editApplicationByID($pdo, $application_status, $application_id) {
+    $query = "UPDATE applications
+            SET application_status = ?
+            WHERE application_id = ?";
+    $statement = $pdo -> prepare($query);
+	$executeQuery = $statement -> execute([$application_status, $application_id]);
+    
+    if ($executeQuery) {
+		$response = array(
+            "statusCode" => "200",
+            "message" => "Successfully edited application!"
+        );
+	} else {
+        $response = array(
+            "statusCode" => "400",
+            "message" => "Failed to edit application!"
         );
     }
     return $response;
@@ -276,6 +358,26 @@ function getApplicationsByPostID($pdo, $post_id) {
     return $response;
 }
 
+function countApplicationsByPostID($pdo, $post_id) {
+    $query = "SELECT COUNT(*) AS applicationCount FROM applications WHERE post_id = ?";
+
+    $statement = $pdo -> prepare($query);
+    $executeQuery = $statement -> execute([$post_id]);
+
+    if($executeQuery) {
+        $response = array(
+            "statusCode" => "200",
+            "querySet" => $statement -> fetch()
+        );
+    } else {
+        $response = array(
+            "statusCode" => "400",
+            "message" => "Failed to get application count from job post #" . $post_id . "!"
+        );
+    }
+    return $response;
+}
+
 function getApplicationsByApplicantID($pdo, $applicant_id) {
     $query = "SELECT * FROM applications WHERE applicant_id = ?";
 
@@ -291,6 +393,25 @@ function getApplicationsByApplicantID($pdo, $applicant_id) {
         $response = array(
             "statusCode" => "400",
             "message" => "Failed to get all applications from applicant #" . $applicant_id . "!"
+        );
+    }
+    return $response;
+}
+
+function sendMessage($pdo, $application_id, $sender_id, $message_content) {
+    $query = "INSERT INTO messages (application_id, sender_id, message_content) VALUES (?, ?, ?)";
+    $statement = $pdo -> prepare($query);
+	$executeQuery = $statement -> execute([$application_id, $sender_id, $message_content]);
+    
+    if ($executeQuery) {
+		$response = array(
+            "statusCode" => "200",
+            "message" => "Message sent succesfully!"
+        );
+	} else {
+        $response = array(
+            "statusCode" => "400",
+            "message" => "Message failed to send!"
         );
     }
     return $response;
@@ -316,7 +437,7 @@ function getMessagesByApplicationID($pdo, $application_id) {
     return $response;
 }
 
-function getMessagesCountByApplicationID($pdo, $application_id) {
+function countMessagesByApplicationID($pdo, $application_id) {
     $query = "SELECT COUNT(*) AS messageCount FROM messages WHERE application_id = ?";
 
     $statement = $pdo -> prepare($query);

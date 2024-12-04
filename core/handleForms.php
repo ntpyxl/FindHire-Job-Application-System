@@ -76,14 +76,41 @@ if(isset($_POST['addJobPostButton'])) {
     }
 }
 
+if(isset($_POST['editJobPostButton'])) {
+    $job_title = $_POST['job_title'];
+    $job_desc = $_POST['job_desc'];
+
+    $function = editJobPost($pdo, $job_title, $job_desc, $_GET['post_id']);
+    if($function['statusCode'] == "200"){
+        $_SESSION['message'] = $function['message'];
+        header("Location: ../index.php");
+    } elseif($function['statusCode'] == "400") {
+        $_SESSION['message'] = "Error " . $function['statusCode'] . ": " . $function['message'];
+        header('Location: ../editJobPost.php?post_id=' . $post_id);
+    }
+}
+
+if(isset($_POST['deleteJobPostButton'])) {
+    $function = deleteJobPost($pdo, $_GET['post_id']);
+    if($function['statusCode'] == "200"){
+        $_SESSION['message'] = $function['message'];
+        header("Location: ../index.php");
+    } elseif($function['statusCode'] == "400") {
+        $_SESSION['message'] = "Error " . $function['statusCode'] . ": " . $function['message'];
+        header('Location: ../addJobPost.php?post_id=' . $post_id);
+    }
+}
+
 if(isset($_POST['sendApplicationButton'])) {
     $cover_letter = $_POST['cover_letter'];
     $attachment = $_FILES['attachment'];
     $post_id = $_POST['post_id'];
-    $target_directory = "../resumes/job_post_" . $post_id;
-    $target_file = $target_directory . "/" . $attachment['name'];
 
-    $function = addApplication($pdo, $post_id, $cover_letter, $attachment['name']);
+    $unique_id = sha1(md5(rand(1,9999999))) . "." . pathinfo($attachment['name'], PATHINFO_EXTENSION);
+    $target_directory = "../resumes/job_post_" . $post_id;
+    $target_file = $target_directory . "/" . $unique_id;
+
+    $function = addApplication($pdo, $post_id, $cover_letter, $unique_id);
     if($function['statusCode'] == "200"){
         $_SESSION['message'] = $function['message'];
         header("Location: ../index.php");
@@ -100,6 +127,45 @@ if(isset($_POST['sendApplicationButton'])) {
         header("Location: ../viewJobPost.php?post_id=" . $post_id);
     } else {
         $_SESSION['message'] = "FILE UPLOAD FAILED";
+    }
+}
+
+if(isset($_POST['sendMessageButton'])) {
+    $post_id = $_POST['post_id'];
+    $application_id = $_POST['application_id'];
+    $sender_id = $_POST['sender_id'];
+    $message_content = $_POST['message'];
+
+    $function = sendMessage($pdo, $application_id, $sender_id, $message_content);
+    if($function['statusCode'] == "200") {
+        $_SESSION['message'] = $function['message'];
+        header('Location: ../viewApplicationMessages.php?post_id=' . $post_id . '&application_id=' . $application_id);
+    } elseif($function['statusCode'] == "400") {
+        $_SESSION['message'] = "Error " . $function['statusCode'] . ": " . $function['message'];
+        header('Location: ../viewApplicationMessages.php?post_id=' . $post_id . '&application_id=' . $application_id);
+    }
+}
+
+if(isset($_POST['downloadAttachmentButton'])) {
+    $filename = getApplicationByID($pdo, $_GET['application_id'])['querySet']['attachment'];
+    $filepath = "../resumes/job_post_" . $_GET['post_id'] . "/" . $filename;
+
+    if(file_exists($filepath)) {
+        header('Content-Description: File Transfer');
+        header('Content-Type: application/octet-stream');
+        header('Content-Disposition: attachment; filename="' . basename($filepath) . '"');
+        header('Expires: 0');
+        header('Cache-Control: must-revalidate');
+        header('Pragma: public');
+        header('Content-Length: ' . filesize($filepath));
+        
+        ob_clean();
+        flush();
+
+        readfile($filepath);
+        exit;
+    } else {
+        echo "File not found";
     }
 }
 
