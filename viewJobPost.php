@@ -58,8 +58,34 @@ if(!isset($_SESSION['user_id'])) {
                     <td><?php echo $row['application_status']?></td>
                     <td>
                         <?php $messageCount = countMessagesByApplicationID($pdo, $row['application_id'])['querySet']?>
-                        <input type="submit" value="View Application (<?php echo $messageCount['messageCount']?> Messages)" onclick="window.location.href='viewApplication.php?post_id=<?php echo $_GET['post_id']?>&application_id=<?php echo $row['application_id']; ?>';">
+                        <input type="submit" value="View Application (<?php echo $messageCount['messageCount']?> Messages)" onclick="window.location.href='viewApplication.php?post_id=<?php echo $_GET['post_id']?>&application_id=<?php echo $row['application_id']; ?>&return_to=viewJobPost';">
                     </td>
+                </tr>
+            <?php 
+            }
+            ?>
+        </table>
+
+        <hr style="width: 99%; height: 2px; color: black; background-color: black; text-align: center;">
+
+        <table>
+            <tr>
+                <th colspan="4", style="font-size: 18px;">Hired Applicants</th>
+            </tr>
+
+            <tr>
+                <th>Application ID</th>
+                <th>Applicant Name</th>
+            </tr>
+
+            <?php
+            $acceptedApplicantsData = getAcceptedApplicationsByPostID($pdo, $_GET['post_id'])['querySet'];
+            foreach($acceptedApplicantsData as $row) {
+                $applicantData = getUserByID($pdo, $row['applicant_id'])['querySet'];
+            ?>
+                <tr>
+                    <td><?php echo $row['application_id']?></td>
+                    <td><?php echo $applicantData['first_name'] . ' ' . $applicantData['last_name']?></td>
                 </tr>
             <?php 
             }

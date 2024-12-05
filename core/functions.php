@@ -457,4 +457,24 @@ function countMessagesByApplicationID($pdo, $application_id) {
     return $response;
 }
 
+function getAcceptedApplicationsByPostID($pdo, $post_id) {
+    $query = "SELECT * FROM applications WHERE post_id = ? AND application_status = 'Accepted'";
+
+    $statement = $pdo -> prepare($query);
+    $executeQuery = $statement -> execute([$post_id]);
+
+    if($executeQuery) {
+        $response = array(
+            "statusCode" => "200",
+            "querySet" => $statement -> fetchAll()
+        );
+    } else {
+        $response = array(
+            "statusCode" => "400",
+            "message" => "Failed to get all accepted applications from job post #" . $post_id . "!"
+        );
+    }
+    return $response;
+}
+
 ?>

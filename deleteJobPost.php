@@ -28,7 +28,7 @@ if($_SESSION['user_role'] == "Applicant") {
 
         <hr style="width: 99%; height: 2px; color: black; background-color: black; text-align: center;">
 
-        <input type="submit" value="Return" onclick="window.location.href='index.php';">
+        <input type="submit" value="Return home" onclick="window.location.href='index.php';">
 
         <table>
             <tr>

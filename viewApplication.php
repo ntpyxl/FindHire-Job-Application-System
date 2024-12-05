@@ -24,9 +24,18 @@ if(!isset($_SESSION['user_id'])) {
 	    <?php } unset($_SESSION['message']); ?>
 
         <br>
-        <input type="submit" value="Return home" onclick="window.location.href='index.php';">
+
+        <?php if($_GET['return_to'] == "viewJobPost") {?>
+            <input type="submit" value="Return" onclick="window.location.href='viewJobPost.php?post_id=<?php echo $_GET['post_id'] ?>';">
+        <?php
+        } if($_GET['return_to'] == "viewSentApplications") {?>
+            <input type="submit" value="Return" onclick="window.location.href='viewSentApplications.php';">
+        <?php
+        }
+        ?>
+
         <?php $messageCount = countMessagesByApplicationID($pdo, $_GET['application_id'])['querySet']?>
-        <input type="submit" value="Message (<?php echo $messageCount['messageCount']?> Messages)" onclick="window.location.href='viewApplicationMessages.php?post_id=<?php echo $_GET['post_id']?>&application_id=<?php echo $_GET['application_id']?>';">
+        <input type="submit" value="Message (<?php echo $messageCount['messageCount']?> Messages)" onclick="window.location.href='viewApplicationMessages.php?post_id=<?php echo $_GET['post_id']?>&application_id=<?php echo $_GET['application_id']?>&return_to=<?php echo $_GET['return_to']?>';">
         
         <hr style="width: 99%; height: 2px; color: black; background-color: black; text-align: center;">
 
@@ -40,20 +49,25 @@ if(!isset($_SESSION['user_id'])) {
 
         <?php
         $applicationData = getApplicationByID($pdo, $_GET['application_id'])['querySet'];
-        if($applicationData['application_status'] != "Pending") {
+        if($_SESSION['user_role'] == "HR") {
+            if($applicationData['application_status'] != "Pending") {
         ?>
-            <input type="submit" value="Repend application" onclick="window.location.href='core/editApplicationStatus.php?post_id=<?php echo $_GET['post_id']?>&application_id=<?php echo $_GET['application_id']?>&status=Pending';">
+                <input type="submit" value="Repend application" onclick="window.location.href='core/editApplicationStatus.php?post_id=<?php echo $_GET['post_id']?>&application_id=<?php echo $_GET['application_id']?>&status=Pending';">
+            <?php
+            } if($applicationData['application_status'] != "Accepted") {
+            ?>
+                <input type="submit" value="Accept application" onclick="window.location.href='core/editApplicationStatus.php?post_id=<?php echo $_GET['post_id']?>&application_id=<?php echo $_GET['application_id']?>&status=Accepted';">
+            <?php
+            } if($applicationData['application_status'] != "Rejected") {
+            ?>
+                <input type="submit" value="Reject application" onclick="window.location.href='core/editApplicationStatus.php?post_id=<?php echo $_GET['post_id']?>&application_id=<?php echo $_GET['application_id']?>&status=Rejected';">
         <?php
-        } if($applicationData['application_status'] != "Accepted") {
+            }
         ?>
-            <input type="submit" value="Accept application" onclick="window.location.href='core/editApplicationStatus.php?post_id=<?php echo $_GET['post_id']?>&application_id=<?php echo $_GET['application_id']?>&status=Accepted';">
-        <?php
-        } if($applicationData['application_status'] != "Rejected") {
-        ?>
-            <input type="submit" value="Reject application" onclick="window.location.href='core/editApplicationStatus.php?post_id=<?php echo $_GET['post_id']?>&application_id=<?php echo $_GET['application_id']?>&status=Rejected';">
+        <br><br>
         <?php
         }
-        ?> <br><br>
+        ?> 
 
         <?php $applicantData = getUserByID($pdo, $applicationData['applicant_id'])['querySet']?>
 

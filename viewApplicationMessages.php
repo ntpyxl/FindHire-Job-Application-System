@@ -24,7 +24,7 @@ if(!isset($_SESSION['user_id'])) {
 	    <?php } unset($_SESSION['message']); ?>
 
         <br>
-        <input type="submit" value="Return" onclick="window.location.href='viewApplication.php?post_id=<?php echo $_GET['post_id']?>&application_id=<?php echo $_GET['application_id']; ?>';">
+        <input type="submit" value="Return" onclick="window.location.href='viewApplication.php?post_id=<?php echo $_GET['post_id']?>&application_id=<?php echo $_GET['application_id']; ?>&return_to=<?php echo $_GET['return_to']?>';">
 
         <hr style="width: 99%; height: 2px; color: black; background-color: black; text-align: center;">
 
@@ -61,6 +61,7 @@ if(!isset($_SESSION['user_id'])) {
             <textarea name="message" rows="4" cols="50" placeholder="Type your message here" required></textarea> <br>
             <input type="hidden" name="post_id" value="<?php echo $_GET['post_id']?>">
             <input type="hidden" name="application_id" value="<?php echo $_GET['application_id']?>">
+            <input type="hidden" name="return_to" value="<?php echo $_GET['return_to']?>">
             <input type="hidden" name="sender_id" value="<?php echo $_SESSION['user_id']?>">
             <input type="submit" name="sendMessageButton" value="Send Message">
         </form>
