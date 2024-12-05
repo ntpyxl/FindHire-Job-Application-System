@@ -13,27 +13,28 @@ if(!isset($_SESSION['user_id'])) {
         <link rel="stylesheet" href="styles.css?v=<?php echo time(); ?>">
     </head>
     <body>
-        <h2 style="text-align: center;">FIND HIRE</h2>
+        <div class="navBar">
+            <div class="logo">
+                <h2 style="text-align: center;">FIND HIRE</h2>
+            </div>
 
-        Welcome <?php echo getUserByID($pdo, $_SESSION['user_id'])['querySet']['first_name']?> to FindHire! 
+            <input type="submit" value="Return home" onclick="window.location.href='index.php';">
 
-        <?php if (isset($_SESSION['message'])) { ?>
-            <h3 style="color: red;">	
-                <?php echo $_SESSION['message']; ?>
-            </h3>
-	    <?php } unset($_SESSION['message']); ?>
+            <?php if (isset($_SESSION['message'])) { ?>
+                <h3 style="color: #703410; margin: 0px 0px 0px 12px ">	
+                    <?php echo $_SESSION['message']; ?>
+                </h3>
+	        <?php } unset($_SESSION['message']); ?>
+        </div>
 
-        <br>
-        <input type="submit" value="Return home" onclick="window.location.href='index.php';">
-
-        <hr style="width: 99%; height: 2px; color: black; background-color: black; text-align: center;">
+        <hr>
 
         <table>
             <tr>
                 <th colspan="6", style="font-size: 18px;">Your Application History</th>
             </tr>
 
-            <tr>
+            <tr class="tableHeader">
                 <th>Application ID</th>
                 <th>Job Post</th>
                 <th>Status</th>
@@ -49,10 +50,13 @@ if(!isset($_SESSION['user_id'])) {
                 <tr>
                     <td><?php echo $row['application_id']?></td>
                     <td><?php echo $jobPostData['job_title']?></td>
-                    <td><?php echo $row['application_status']?></td>
+                    <td class="application_<?php echo $row['application_status']?>">
+                        <?php echo $row['application_status']?>
+                    </td>
                     <td><?php echo $row['date_sent']?></td>
                     <td>
-                        <input type="submit" value="View Application" onclick="window.location.href='viewApplication.php?post_id=<?php echo $row['post_id']?>&application_id=<?php echo $row['application_id'];?>&return_to=viewSentApplications';">
+                        <?php $messageCount = countMessagesByApplicationID($pdo, $row['application_id'])['querySet']?>
+                        <input type="submit" value="View Application (<?php echo $messageCount['messageCount']?> Messages)" onclick="window.location.href='viewApplication.php?post_id=<?php echo $row['post_id']?>&application_id=<?php echo $row['application_id'];?>&return_to=viewSentApplications';">
                     </td>
                 </tr>
             <?php

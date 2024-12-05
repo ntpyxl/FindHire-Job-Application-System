@@ -209,6 +209,8 @@ function deleteJobPost($pdo, $post_id) {
             "statusCode" => "200",
             "message" => "Successfully deleted job post!"
         );
+        deleteMessagesByPostID($pdo, $post_id);
+        deleteApplicationsByPostID($pdo, $post_id); 
 	} else {
         $response = array(
             "statusCode" => "400",

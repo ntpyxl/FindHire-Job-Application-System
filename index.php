@@ -13,34 +13,36 @@ if(!isset($_SESSION['user_id'])) {
         <link rel="stylesheet" href="styles.css?v=<?php echo time(); ?>">
     </head>
     <body>
-        <h2 style="text-align: center;">FIND HIRE</h2>
+        <div class="navBar">
+            <div class="logo">
+                <h2 style="text-align: center;">FIND HIRE</h2>
+            </div>
+            
+            <input type="submit" value="View profile" onclick="window.location.href='viewProfile.php';">
+            <?php if($_SESSION['user_role'] == "HR") { ?>
+                <input type="submit" value="Post a new job" onclick="window.location.href='addJobPost.php';">
+                <input type="submit" value="View posted jobs" onclick="window.location.href='viewPostedJobs.php';">
+            <?php }
+            if($_SESSION['user_role'] == "Applicant") { ?>
+                <input type="submit" value="View applications" onclick="window.location.href='viewSentApplications.php';">
+            <?php } ?>
+            <input type="submit" value="Logout" style="margin: 0px 0px 0px 20px;"onclick="window.location.href='core/logout.php';">
+           
+            <?php if (isset($_SESSION['message'])) { ?>
+                <h3 style="color: #703410; margin: 0px 0px 0px 12px ">	
+                    <?php echo $_SESSION['message']; ?>
+                </h3>
+	        <?php } unset($_SESSION['message']); ?>
+        </div>
 
-        Welcome <?php echo getUserByID($pdo, $_SESSION['user_id'])['querySet']['first_name']?> to FindHire! 
-        
-        <input type="submit" value="View profile" onclick="window.location.href='viewProfile.php';">
-        <?php if($_SESSION['user_role'] == "HR") { ?>
-            <input type="submit" value="Post a new job" onclick="window.location.href='addJobPost.php';">
-            <input type="submit" value="View posted jobs" onclick="window.location.href='viewPostedJobs.php';">
-        <?php }
-        if($_SESSION['user_role'] == "Applicant") { ?>
-            <input type="submit" value="View applications" onclick="window.location.href='viewSentApplications.php';">
-        <?php } ?>
-        <input type="submit" value="Logout" onclick="window.location.href='core/logout.php';">
-
-        <?php if (isset($_SESSION['message'])) { ?>
-            <h3 style="color: red;">	
-                <?php echo $_SESSION['message']; ?>
-            </h3>
-	    <?php } unset($_SESSION['message']); ?>
-
-        <hr style="width: 99%; height: 2px; color: black; background-color: black; text-align: center;">
+        <hr>
 
         <table>
             <tr>
                 <th colspan="5", style="font-size: 18px;">Job Posts</th>
             </tr>
 
-            <tr>
+            <tr class="tableHeader">
                 <th>Post ID</th>
                 <th>Recruiter</th>
                 <th>Job Title</th>

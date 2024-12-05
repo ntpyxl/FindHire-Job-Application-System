@@ -10,11 +10,11 @@ if(isset($_POST['registerButton'])) {
 
     $first_name = sanitizeInput($_POST['first_name']);
     $last_name = sanitizeInput($_POST['last_name']);
-    $age = $_POST['age']
-    $birthdate = $_POST['birthdate']
-    $email_address = $_POST['email_address']
-    $phone_number = $_POST['phone_number']
-    $home_address = $_POST['home_address']
+    $age = $_POST['age'];
+    $birthdate = $_POST['birthdate'];
+    $email_address = $_POST['email_address'];
+    $phone_number = $_POST['phone_number'];
+    $home_address = $_POST['home_address'];
 
     $function = addUser($pdo, $username, $password, $confirm_password, $hashed_password, $first_name, $last_name, $age, $birthdate, $email_address, $phone_number, $home_address);
     if($function['statusCode'] == "200") {
@@ -142,29 +142,6 @@ if(isset($_POST['sendMessageButton'])) {
     } elseif($function['statusCode'] == "400") {
         $_SESSION['message'] = "Error " . $function['statusCode'] . ": " . $function['message'];
         header('Location: ../viewApplicationMessages.php?post_id=' . $post_id . '&application_id=' . $application_id . '&return_to=' . $return_to);
-    }
-}
-
-if(isset($_POST['downloadAttachmentButton'])) {
-    $filename = getApplicationByID($pdo, $_GET['application_id'])['querySet']['attachment'];
-    $filepath = "../resumes/job_post_" . $_GET['post_id'] . "/" . $filename;
-
-    if(file_exists($filepath)) {
-        header('Content-Description: File Transfer');
-        header('Content-Type: application/octet-stream');
-        header('Content-Disposition: attachment; filename="' . basename($filepath) . '"');
-        header('Expires: 0');
-        header('Cache-Control: must-revalidate');
-        header('Pragma: public');
-        header('Content-Length: ' . filesize($filepath));
-        
-        ob_clean();
-        flush();
-
-        readfile($filepath);
-        exit;
-    } else {
-        echo "File not found";
     }
 }
 

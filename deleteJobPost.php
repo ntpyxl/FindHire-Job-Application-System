@@ -16,26 +16,30 @@ if($_SESSION['user_role'] == "Applicant") {
         <link rel="stylesheet" href="styles.css?v=<?php echo time(); ?>">
     </head>
     <body>
-        <h2 style="text-align: center;">FIND HIRE</h2>
-
-        Hello <?php echo getUserByID($pdo, $_SESSION['user_id'])['querySet']['first_name']?>! Would you like to delete this job post?
-
-        <?php if (isset($_SESSION['message'])) { ?>
-            <h3 style="color: red;">	
-                <?php echo $_SESSION['message']; ?>
-            </h3>
-	    <?php } unset($_SESSION['message']); ?>
-
-        <hr style="width: 99%; height: 2px; color: black; background-color: black; text-align: center;">
+        <div class="navBar">
+            <div class="logo">
+                <h2 style="text-align: center;">FIND HIRE</h2>
+            </div>
 
         <input type="submit" value="Return home" onclick="window.location.href='index.php';">
+
+        <?php if (isset($_SESSION['message'])) { ?>
+                <h3 style="color: #703410; margin: 0px 0px 0px 12px ">	
+                    <?php echo $_SESSION['message']; ?>
+                </h3>
+	        <?php } unset($_SESSION['message']); ?>
+        </div>
+
+        <hr>
+
+        Hello <?php echo getUserByID($pdo, $_SESSION['user_id'])['querySet']['first_name']?>! Are you sure you want to delete this job post along with its submitted applications?
 
         <table>
             <tr>
                 <th colspan="4", style="font-size: 18px;">Job Post</th>
             </tr>
 
-            <tr>
+            <tr class="tableHeader">
                 <th>Post ID</th>
                 <th>Recruiter</th>
                 <th>Job Title</th>
@@ -54,7 +58,7 @@ if($_SESSION['user_role'] == "Applicant") {
             </tr>
         </table>
 
-        <form action="core/handleForms.php?post_id=<?php echo $_GET['post_id']?>" method="POST">
+        <form action="core/handleForms.php?post_id=<?php echo $_GET['post_id']?>" method="POST" style="all: unset;">
             <input type="submit" name="deleteJobPostButton" value="Delete job post">
         </form>
     </body>

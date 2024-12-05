@@ -13,28 +13,29 @@ if(!isset($_SESSION['user_id'])) {
         <link rel="stylesheet" href="styles.css?v=<?php echo time(); ?>">
     </head>
     <body>
-        <h2 style="text-align: center;">FIND HIRE</h2>
+        <div class="navBar">
+            <div class="logo">
+                <h2 style="text-align: center;">FIND HIRE</h2>
+            </div>
 
-        Welcome <?php echo getUserByID($pdo, $_SESSION['user_id'])['querySet']['first_name']?> to FindHire! 
+            <input type="submit" value="Edit profile" onclick="window.location.href='editProfile.php';">
+            <input type="submit" value="Return home" onclick="window.location.href='index.php';">
 
-        <?php if (isset($_SESSION['message'])) { ?>
-            <h3 style="color: red;">	
-                <?php echo $_SESSION['message']; ?>
-            </h3>
-	    <?php } unset($_SESSION['message']); ?>
+            <?php if (isset($_SESSION['message'])) { ?>
+                <h3 style="color: #703410; margin: 0px 0px 0px 12px ">	
+                    <?php echo $_SESSION['message']; ?>
+                </h3>
+	        <?php } unset($_SESSION['message']); ?>
+        </div>
 
-        <br>
-        <input type="submit" value="Return home" onclick="window.location.href='index.php';">
-        <input type="submit" value="Edit profile" onclick="window.location.href='editProfile.php';">
-
-        <hr style="width: 99%; height: 2px; color: black; background-color: black; text-align: center;">
+        <hr>
 
         <table>
             <tr>
                 <th colspan="9", style="font-size: 18px;">Your Profile</th>
             </tr>
 
-            <tr>
+            <tr class="tableHeader">
                 <th>User ID</th>
                 <th>Name</th>
                 <th>Age</th>

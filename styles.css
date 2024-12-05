@@ -1,47 +1,62 @@
+body {
+    background-color: aliceblue;
+}
+h2 {
+    padding: 2px 0px;
+    margin: 2px 0px ;
+}
+
+p {
+    padding: 2px 4px;
+    margin: 2px 4px;
+}
+
 table {
-    border: 2px solid; 
+    border: 2px solid;
     padding: 2px;
+    margin: 12px 0px;
     border-collapse: collapse;
+    background-color: #f5f5dc;
+}
+
+.tableHeader {
+    background-color: #e0e09e;
 }
 
 th, td {
     border: 1px solid; 
     padding: 2px 6px; 
     word-wrap: break-word; 
-    /* max-width: 250px; */
 }
 
+.application_Accepted {
+    background-color: #c2fd6a;
+}
 
-input, button {
+.application_Rejected {
+    background-color: #ff8c62;
+}
+
+label {
+    display: inline-flex;
+    font-weight: lighter;
+}
+
+input {
     padding: 6px 8px;
     margin: 8px 2px;
     box-sizing: border-box;
 }
 
-textarea {
-    resize: none;
-}
-
-form {
-    margin: 0px;
-}
-
-input[name="age"] {
-    width: 70px;
-}
-
-input[name="email_address"] {
-    width: 300px;
+input[type="submit"] {
+    border-radius: 6px;
+    border: solid 1px;
 }
 
 input[name="home_address"] {
-    width: 700px;
+    width: 600px;
 }
 
-input[name="deleteApplicationButton"] {
-    background-color: #ff2727;
-    font-weight: bold;
-}
 
 input:focus {
     background-color: #2de5fd;
@@ -52,4 +67,133 @@ select {
     margin: 8px 2px;
     box-sizing: border-box;
     width: fit-content;
+}
+
+textarea {
+    resize: none;
+}
+
+form {
+    padding: 6px;
+    margin: 0px;
+    background-color: #bef5ff;
+    border-radius: 14px;
+    width: 800px;
+    display: inline-block;
+}
+
+hr {
+    width: 99%;
+    height: 2px;
+    color: black;
+    background-color: black;
+    border-color: black;
+    text-align: center;
+}
+
+.navBar {
+    display: flex;
+    align-items: center;
+    background-color: #b0f4ff;
+}
+
+.logo {
+    padding: 0px 4px;
+    margin: 0px 8px 0px 12px;
+}
+
+.jobDescBox {
+    padding: 0px 6px;
+    border: solid 2px;
+    width: 800px;
+    background-color: #f5f5dc;
+}
+
+.applicationDetailsBox{
+    margin: 6px 0px;
+    border: solid 2px;
+    width: 812px;
+    background-color: #f5f5dc;
+}
+
+.applicationDetailsHeader{
+    padding: 0px 4px 0px 12px;
+    display: flex;
+    align-items: center;
+    background-color: #e0e09e;
+}
+
+.applicationCoverLetterBox {
+    padding: 0px 4px 16px 4px;
+    width: 800px;
+}
+
+.messageBox {
+    padding: 4px;
+    margin: 6px 4px;
+}
+
+.scrollableMessageBox {
+    width: fit-content;
+    height: 500px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+/* Chromium */
+.scrollableMessageBox::-webkit-scrollbar {
+    width: 12px;
+}
+
+.scrollableMessageBox::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+.scrollableMessageBox::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 10px;
+}
+
+/* Firefox */
+.scrollableMessageBox {
+    scrollbar-width: thin; 
+    scrollbar-color: #888 #f1f1f1; 
+}
+
+.sendMessageBox {
+    padding: 4px;
+    margin: 6px 4px;
+}
+
+.bigColumn {
+    float: left;
+    width: 100%;
+}
+
+.leftColumn {
+    align-items: center;
+    float: left;
+    width: 400px;
+}
+
+.rightColumn {
+    float: left;
+    width: 40%;
+}
+
+.formRow {
+    align-items: center;
+    display: flex;
+    width: 100%;
+}
+
+.col-30 {
+    float: left;
+    width: 30%;
+    text-align: right;
+}
+
+.col-70 {
+    float: left;
+    width: 70%;
 }

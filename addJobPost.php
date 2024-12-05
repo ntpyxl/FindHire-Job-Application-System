@@ -16,26 +16,43 @@ if($_SESSION['user_role'] == "Applicant") {
         <link rel="stylesheet" href="styles.css?v=<?php echo time(); ?>">
     </head>
     <body>
-        <h2 style="text-align: center;">FIND HIRE</h2>
+        <div class="navBar">
+            <div class="logo">
+                <h2 style="text-align: center;">FIND HIRE</h2>
+            </div>
 
-        Hello <?php echo getUserByID($pdo, $_SESSION['user_id'])['querySet']['first_name']?>! Would you like to add a new job post?
+            <input type="submit" value="Return home" onclick="window.location.href='index.php';">
 
-        <?php if (isset($_SESSION['message'])) { ?>
-            <h3 style="color: red;">	
-                <?php echo $_SESSION['message']; ?>
-            </h3>
-	    <?php } unset($_SESSION['message']); ?>
+            <?php if (isset($_SESSION['message'])) { ?>
+                <h3 style="color: #703410; margin: 0px 0px 0px 12px ">	
+                    <?php echo $_SESSION['message']; ?>
+                </h3>
+	        <?php } unset($_SESSION['message']); ?>
+        </div>
 
-        <hr style="width: 99%; height: 2px; color: black; background-color: black; text-align: center;">
+        <hr>
 
-        <input type="submit" value="Return" onclick="window.location.href='index.php';">
+        Hello <?php echo getUserByID($pdo, $_SESSION['user_id'])['querySet']['first_name']?>! Add a new job post by filling up the form below! <br>
 
         <form action="core/handleForms.php" method="POST">
-            <label for="job_title">Job title</label>
-            <input type="text" name="job_title" required> <br>
+            <div class="leftColumn">
+                <div class="formRow">
+                    <div class="col-30"><label for="job_title">Job title</label></div>
+                    <div class="col-70"><input type="text" name="job_title" required></div>
+                </div>
+            </div>
 
-            <label for="job_desc">Job description</label>
-            <textarea name="job_desc" rows="20" cols="70" required></textarea> <br>
+            <br><br><br>
+
+            <div class="leftColumn">
+                <div class="formRow">
+                    <div class="col-30"><label for="job_desc">Job description</label></div>
+                    <div class="col-70"><textarea name="job_desc" rows="20" cols="70" required></textarea></div>
+                </div>
+            </div>
+
+            <!--- wtf -->
+            <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 
             <input type="submit" name="addJobPostButton">
         </form>
